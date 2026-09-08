@@ -1,0 +1,77 @@
+app-id: org.mmxod.MMXOD
+runtime: org.freedesktop.Platform
+runtime-version: '24.08'
+sdk: org.freedesktop.Sdk
+command: mmxod-wrapper
+
+finish-args:
+  - --socket=x11
+  - --socket=wayland
+  - --share=network
+  - --socket=pulseaudio
+  - --filesystem=xdg-run/pipewire-0
+  - --device=dri
+
+modules:
+  - name: openssl-1.1
+    buildsystem: simple
+    build-commands:
+      - ./config --prefix=/app --openssldir=/app/etc/ssl shared
+      - make -j$(nproc)
+      - make install_sw
+    sources:
+      - type: archive
+        url: https://www.openssl.org/source/openssl-1.1.1w.tar.gz
+        sha256: cf3098950cb4d853ad95c0841f1f9c6d3dc102dccfcacd521d93925208b76ac8
+
+  - name: openal-soft
+    buildsystem: cmake-ninja
+    sources:
+      - type: archive
+        url: https://openal-soft.org/openal-releases/openal-soft-1.23.1.tar.bz2
+        sha256: 796f4b89134c4e57270b7f0d755f0fa3435b90da437b745160a49bd41c845b21
+
+  - name: sfml
+    buildsystem: cmake-ninja
+    sources:
+      - type: archive
+        url: https://www.sfml-dev.org/files/SFML-2.5.1-sources.zip
+        sha256: bf1e0643acb92369b24572b703473af60bac82caf5af61e77c063b779471bb7f
+
+  - name: csfml
+    buildsystem: cmake-ninja
+    sources:
+      - type: archive
+        url: https://www.sfml-dev.org/files/CSFML-2.5.1-sources.zip
+        sha256: 5453f04ae782a22697ebeb2694a0f7a56bf172c1406ca2b9134143198705ddc7
+
+  - name: krb5
+    buildsystem: autotools
+    subdir: src
+    sources:
+      - type: archive
+        url: https://kerberos.org/dist/krb5/1.21/krb5-1.21.2.tar.gz
+        sha256: 9560941a9d843c0243a71b17a7ac6fe31c7cebb5bce3983db79e52ae7e850491
+
+  - name: mmxod
+    buildsystem: simple
+    build-commands:
+      - install -d /app/bin
+      - install -d /app/share/mmxod
+      - cp -r * /app/share/mmxod/
+      - install -Dm755 mmxod-wrapper /app/bin/mmxod-wrapper
+      - install -Dm644 org.mmxod.MMXOD.desktop /app/share/applications/org.mmxod.MMXOD.desktop
+      - install -Dm644 org.mmxod.MMXOD.png /app/share/icons/hicolor/128x128/apps/org.mmxod.MMXOD.png
+      - install -Dm644 org.mmxod.MMXOD.metainfo.xml /app/share/metainfo/org.mmxod.MMXOD.metainfo.xml
+    sources:
+      - type: archive
+        url: https://github.com/Walt-5D/MMXOD-Vanilla-Flatpak-Linux/releases/download/v19.12/mmxod-linux.zip
+        sha256: cf2f7befb29e8dcb03376d7948a5f1f62feab221abf7a4b4bf2fa97d0f2b370d
+      - type: file
+        path: mmxod-wrapper
+      - type: file
+        path: org.mmxod.MMXOD.desktop
+      - type: file
+        path: org.mmxod.MMXOD.png
+      - type: file
+        path: org.mmxod.MMXOD.metainfo.xml

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>org.mmxod.MMXOD</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>LicenseRef-proprietary</project_license>
+
+  <!-- Nombre -->
+  <name>Mega Man X Online: Deathmatch</name>
+
+  <!-- Resumen corto en múltiples idiomas -->
+  <summary>Multiplayer 2D platform shooter game</summary>
+  <summary xml:lang="es">Juego de disparos y plataformas 2D multijugador</summary>
+  <summary xml:lang="pt">Jogo de tiro e plataforma 2D multijogador</summary>
+  <summary xml:lang="fr">Jeu de tir et de plateforme 2D multijoueur</summary>
+
+  <!-- Descripción detallada en múltiples idiomas -->
+  <description>
+    <p>
+      Mega Man X Online: Deathmatch is a fast-paced 2D multiplayer action game inspired by the Mega Man X series, featuring custom arenas and multiple playable characters.
+    </p>
+    <p xml:lang="es">
+      Mega Man X Online: Deathmatch es un juego de acción multijugador en 2D inspirado en la saga Mega Man X, con combate rápido, múltiples personajes y arenas personalizadas.
+    </p>
+    <p xml:lang="pt">
+      Mega Man X Online: Deathmatch é um jogo de ação multijogador 2D inspirado na série Mega Man X, com combate rápido, múltiplos personagens e arenas personalizadas.
+    </p>
+    <p xml:lang="fr">
+      Mega Man X Online: Deathmatch est un jeu d'action multijoueur en 2D inspiré de la série Mega Man X, avec des combats rapides, plusieurs personnages et des arènes personnalisées.
+    </p>
+  </description>
+
+  <!-- Capturas de pantalla con formato .png y carpeta /Images/ -->
+  <screenshots>
+    <screenshot type="default">
+      <caption>Mega Man X Online: Deathmatch Poster</caption>
+      <caption xml:lang="es">Arte promocional de Mega Man X Online: Deathmatch</caption>
+      <caption xml:lang="pt">Arte promocional de Mega Man X Online: Deathmatch</caption>
+      <caption xml:lang="fr">Affiche promotionnelle de Mega Man X Online: Deathmatch</caption>
+      <image type="source">https://raw.githubusercontent.com/Walt-5D/MMXOD-Vanilla-Flatpak-Linux/main/Images/cover.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Futuristic Arena Multiplayer Action</caption>
+      <caption xml:lang="es">Combate multijugador en arena futurista</caption>
+      <caption xml:lang="pt">Combate multijogador em arena futurista</caption>
+      <caption xml:lang="fr">Action multijoueur dans une arène futuriste</caption>
+      <image type="source">https://raw.githubusercontent.com/Walt-5D/MMXOD-Vanilla-Flatpak-Linux/main/Images/gameplay1.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Ride Armor and Special Attacks</caption>
+      <caption xml:lang="es">Uso de Ride Armor y ataques especiales</caption>
+      <caption xml:lang="pt">Uso de Ride Armor e ataques especiais</caption>
+      <caption xml:lang="fr">Utilisation du Ride Armor et attaques spéciales</caption>
+      <image type="source">https://raw.githubusercontent.com/Walt-5D/MMXOD-Vanilla-Flatpak-Linux/main/Images/gameplay2.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Snow Mountain Stage Combat</caption>
+      <caption xml:lang="es">Batalla en el escenario de montaña nevada</caption>
+      <caption xml:lang="pt">Batalha no cenário de montanha nevada</caption>
+      <caption xml:lang="fr">Combat dans la montagne enneigée</caption>
+      <image type="source">https://raw.githubusercontent.com/Walt-5D/MMXOD-Vanilla-Flatpak-Linux/main/Images/gameplay3.png</image>
+    </screenshot>
+  </screenshots>
+
+  <!-- Créditos del desarrollador y enlace del proyecto -->
+  <developer_name>gamemaker19 (Flatpak by Walt-5D)</developer_name>
+  <url type="homepage">https://github.com/Walt-5D/MMXOD-Vanilla-Flatpak-Linux</url>
+
+  <launchable type="desktop-id">org.mmxod.MMXOD.desktop</launchable>
+
+  <categories>
+    <category>Game</category>
+    <category>ActionGame</category>
+  </categories>
+
+  <content_rating type="oars-1.1" />
+
+  <releases>
+    <release version="19.12" date="2026-09-08"/>
+  </releases>
+</component>

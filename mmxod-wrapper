@@ -1,0 +1,16 @@
+#!/bin/sh
+# Buscar la carpeta base del ejecutable MMX
+SRC_GAME_DIR=$(find /app/share/mmxod -maxdepth 2 -name "MMX" -exec dirname {} \; | head -n 1)
+DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/mmxod"
+
+# Crear directorio de datos del usuario si no existe
+mkdir -p "$DATA_DIR"
+
+# Copiar archivos base sin sobrescribir configuraciones/guardados del usuario
+cp -rn "$SRC_GAME_DIR"/* "$DATA_DIR"/
+
+# Configurar variables de entorno y ejecutar el juego
+export LD_LIBRARY_PATH=/app/lib:$DATA_DIR:$LD_LIBRARY_PATH
+cd "$DATA_DIR"
+chmod +x MMX
+exec ./MMX "$@"
