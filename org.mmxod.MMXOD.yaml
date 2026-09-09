@@ -5,8 +5,7 @@ sdk: org.freedesktop.Sdk
 command: mmxod-wrapper
 
 finish-args:
-  - --socket=fallback-x11
-  - --socket=wayland
+  - --socket=x11
   - --share=network
   - --socket=pulseaudio
   - --filesystem=xdg-run/pipewire-0
