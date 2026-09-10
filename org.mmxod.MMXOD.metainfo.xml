@@ -61,8 +61,11 @@
     </screenshot>
   </screenshots>
 
-  <!-- Créditos del desarrollador y enlace del proyecto -->
-  <developer_name>gamemaker19 (Flatpak by Walt-5D)</developer_name>
+  <!-- Créditos del desarrollador en formato moderno -->
+  <developer id="com.gamemaker19">
+    <name>gamemaker19 (Flatpak by Walt-5D)</name>
+  </developer>
+
   <url type="homepage">https://github.com/Walt-5D/MMXOD-Vanilla-Flatpak-Linux</url>
 
   <launchable type="desktop-id">org.mmxod.MMXOD.desktop</launchable>

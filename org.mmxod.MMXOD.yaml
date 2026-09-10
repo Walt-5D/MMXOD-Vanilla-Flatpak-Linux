@@ -5,11 +5,15 @@ sdk: org.freedesktop.Sdk
 command: mmxod-wrapper
 
 finish-args:
-  - --socket=x11
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --share=ipc
   - --share=network
   - --socket=pulseaudio
   - --filesystem=xdg-run/pipewire-0
   - --device=dri
+  - --device=input
+  - --socket=session-bus
 
 modules:
   - name: openssl-1.1
@@ -58,6 +62,13 @@ modules:
       - install -d /app/bin
       - install -d /app/share/mmxod
       - cp -r * /app/share/mmxod/
+      - |
+        GAME_DIR=$(find /app/share/mmxod -maxdepth 2 -name "MMX" -exec dirname {} \; | head -n 1)
+        if [ -n "$GAME_DIR" ]; then
+          rm -f "$GAME_DIR"/libcsfml-*.so* "$GAME_DIR"/libsfml-*.so* "$GAME_DIR"/csfml-*.so* 2>/dev/null || true
+          cp -f /app/lib/libcsfml-*.so* "$GAME_DIR"/ 2>/dev/null || true
+          cp -f /app/lib/libsfml-*.so* "$GAME_DIR"/ 2>/dev/null || true
+        fi
       - install -Dm755 mmxod-wrapper /app/bin/mmxod-wrapper
       - install -Dm644 org.mmxod.MMXOD.desktop /app/share/applications/org.mmxod.MMXOD.desktop
       - install -Dm644 org.mmxod.MMXOD.png /app/share/icons/hicolor/128x128/apps/org.mmxod.MMXOD.png
