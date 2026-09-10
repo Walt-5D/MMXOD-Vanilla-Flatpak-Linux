@@ -12,7 +12,8 @@ finish-args:
   - --socket=pulseaudio
   - --filesystem=xdg-run/pipewire-0
   - --device=dri
-  - --device=input
+  - --device=all
+  - --allow=bluetooth
   - --socket=session-bus
 
 modules:
