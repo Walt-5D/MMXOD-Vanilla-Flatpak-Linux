@@ -1,18 +1,31 @@
 #!/bin/sh
+
+# Find the read-only game directory inside the Flatpak app
 SRC_GAME_DIR=$(find /app/share/mmxod -maxdepth 2 -name "MMX" -exec dirname {} \; | head -n 1)
+
+# Define the writable user data directory (XDG compliant)
 DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/mmxod"
 
+# Create the user data directory if it doesn't exist
 mkdir -p "$DATA_DIR"
+
+# Clean up old dynamic libraries from previous runs to prevent version conflicts
 rm -f "$DATA_DIR"/libcsfml-*.so* "$DATA_DIR"/libsfml-*.so* "$DATA_DIR"/csfml-*.so* 2>/dev/null || true
+
+# Copy game assets to the user data directory without overwriting existing user files (using -n)
 cp -rn "$SRC_GAME_DIR"/* "$DATA_DIR"/ 2>/dev/null || true
 
+# Ensure the game finds both Flatpak-provided libraries and its own bundled libraries
 export LD_LIBRARY_PATH=/app/lib:$DATA_DIR:$LD_LIBRARY_PATH
 
+# Navigate to the actual game directory within the writable user data
 REAL_GAME_DIR=$(find "$DATA_DIR" -maxdepth 2 -name "MMX" -exec dirname {} \; | head -n 1)
 cd "${REAL_GAME_DIR:-$DATA_DIR}"
+
+# Ensure the main binary has execution permissions
 chmod +x MMX
 
-# Bucle de latido ajustado a 20 segundos para evitar el oscurecimiento previo
+# 20-second heartbeat loop via D-Bus to prevent screen blanking/screensaver during gameplay
 (
   while true; do
     gdbus call --session \
@@ -24,9 +37,10 @@ chmod +x MMX
 ) &
 KEEPAWAKE_PID=$!
 
-# Ejecutar ejecutable principal en primer plano silenciando advertencias
+# Execute the main game binary in the foreground and silence standard error
 ./MMX "$@" 2>/dev/null
 EXIT_CODE=$?
 
+# Kill the screensaver heartbeat background process upon game exit
 kill $KEEPAWAKE_PID 2>/dev/null || true
 exit $EXIT_CODE

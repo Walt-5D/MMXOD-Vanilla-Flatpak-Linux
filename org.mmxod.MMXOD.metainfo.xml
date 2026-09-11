@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
   <id>org.mmxod.MMXOD</id>
+
+  <!-- AppStream metadata license and game project license -->
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>LicenseRef-proprietary</project_license>
 
-  <!-- Nombre -->
+  <!-- Application Name -->
   <name>Mega Man X Online: Deathmatch</name>
 
-  <!-- Resumen corto en múltiples idiomas -->
+  <!-- Short summary in multiple languages -->
   <summary>Multiplayer 2D platform shooter game</summary>
   <summary xml:lang="es">Juego de disparos y plataformas 2D multijugador</summary>
   <summary xml:lang="pt">Jogo de tiro e plataforma 2D multijogador</summary>
   <summary xml:lang="fr">Jeu de tir et de plateforme 2D multijoueur</summary>
 
-  <!-- Descripción detallada en múltiples idiomas -->
+  <!-- Detailed description in multiple languages -->
   <description>
     <p>
       Mega Man X Online: Deathmatch is a fast-paced 2D multiplayer action game inspired by the Mega Man X series, featuring custom arenas and multiple playable characters.
@@ -29,7 +31,7 @@
     </p>
   </description>
 
-  <!-- Capturas de pantalla fijadas al Tag v19.12 -->
+  <!-- Screenshots pinned to the v19.12 tag to prevent broken links -->
   <screenshots>
     <screenshot type="default">
       <caption>Mega Man X Online: Deathmatch Poster</caption>
@@ -61,27 +63,31 @@
     </screenshot>
   </screenshots>
 
-  <!-- Créditos del desarrollador en formato moderno -->
+  <!-- Original developer credits -->
   <developer_name>gamemaker19</developer_name>
 
-  <!-- URLs del proyecto -->
+  <!-- Project and help URLs -->
   <url type="homepage">https://github.com/Walt-5D/MMXOD-Vanilla-Flatpak-Linux</url>
   <url type="bugtracker">https://github.com/Walt-5D/MMXOD-Vanilla-Flatpak-Linux/issues</url>
   <url type="help">https://github.com/Walt-5D/MMXOD-Vanilla-Flatpak-Linux/blob/main/help.md</url>
   <url type="vcs-browser">https://github.com/Walt-5D/MMXOD-Vanilla-Flatpak-Linux</url>
 
+  <!-- Desktop file mapping -->
   <launchable type="desktop-id">org.mmxod.MMXOD.desktop</launchable>
 
+  <!-- Store categories -->
   <categories>
     <category>Game</category>
     <category>ActionGame</category>
   </categories>
 
+  <!-- OARS rating for mild fantasy violence -->
   <content_rating type="oars-1.1">
     <content_attribute id="violence-cartoon">mild</content_attribute>
     <content_attribute id="violence-fantasy">mild</content_attribute>
   </content_rating>
 
+  <!-- Release history -->
   <releases>
     <release version="19.12" date="2026-09-08"/>
   </releases>
