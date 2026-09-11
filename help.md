@@ -6,11 +6,11 @@ Guía rápida para configurar servidores por IP e instalar mapas personalizados 
 
 ## 1. Ubicación de los archivos del juego / Game Files Location
 
-Debido al aislamiento del sandbox de Flatpak, los archivos modificables del juego se encuentran en la carpeta de datos de usuario de tu sistema:
+Debido al aislamiento del sandbox de Flatpak, todos los archivos configurables del juego se encuentran en la carpeta del contenedor:
 
-`~/.local/share/mmxod/`
+`~/.var/app/org.mmxod.MMXOD/data/mmxod/`
 
-> **Nota:** La carpeta `.local` es una carpeta oculta. Para verla en tu explorador de archivos, presiona la combinación de teclas **Ctrl + H**.
+> **Nota:** La carpeta `.var` está en tu directorio personal. Si usas un navegador de archivos gráfico, presiona **Ctrl + H** para mostrar las carpetas ocultas.
 
 ---
 
@@ -19,20 +19,20 @@ Debido al aislamiento del sandbox de Flatpak, los archivos modificables del jueg
 Para cambiar de servidor o conectarte a una IP personalizada (método oficial de gamemaker19):
 
 1. Abre tu gestor de archivos y navega a la ruta:  
-   `~/.local/share/mmxod/`
-2. Busca el archivo llamado `region.txt` y ábrelo con un editor de texto (como Gedit, KWrite o Text Editor).
-3. Reemplaza el contenido del archivo por la IP o dirección del servidor al que deseas conectarte.
-4. Guarda el archivo y ejecuta el juego normalmente.
+   `~/.var/app/org.mmxod.MMXOD/data/mmxod/`
+2. Busca el archivo `region.txt` y ábrelo con un editor de texto.
+3. Reemplaza la dirección por la IP o dominio del servidor al que deseas conectarte.
+4. Guarda el archivo y reinicia el juego.
 
 ---
 
-## 3. Agregar Mapas Personalizados / Custom Maps
+## 3. Agregar Mapas Personalizados (`maps_custom`)
 
-Para instalar mapas creados por la comunidad:
+Para instalar escenarios creados por la comunidad:
 
 1. Descarga los archivos del mapa personalizado.
-2. Abre la carpeta de mapas del juego en la siguiente ruta:  
-   `~/.local/share/mmxod/maps/`
-   *(Si la carpeta `maps` no existe dentro de `mmxod`, créala manualmente).*
-3. Copia los archivos del mapa descargado dentro de esa carpeta.
-4. Inicia el juego; los nuevos escenarios aparecerán en la lista de selección de mapas al crear una partida.
+2. Abre la carpeta de mapas en la siguiente ruta:  
+   `~/.var/app/org.mmxod.MMXOD/data/mmxod/assets/maps_custom/`
+   *(Si la carpeta `maps_custom` no existe, créala dentro de `assets`).*
+3. Copia los archivos del mapa dentro de esa carpeta.
+4. Inicia el juego; los nuevos escenarios aparecerán en el menú de selección.
