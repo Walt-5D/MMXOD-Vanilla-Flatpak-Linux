@@ -62,14 +62,12 @@
   </screenshots>
 
   <!-- Créditos del desarrollador en formato moderno -->
-  <developer>
-    <name>gamemaker19</name>
-  </developer>
+  <developer_name>gamemaker19</developer_name>
 
   <!-- URLs del proyecto -->
-  <url type="homepage">https://gamemaker19.github.io/MMXOnlineDesktop/</url>
+  <url type="homepage">https://github.com/Walt-5D/MMXOD-Vanilla-Flatpak-Linux</url>
   <url type="bugtracker">https://github.com/Walt-5D/MMXOD-Vanilla-Flatpak-Linux/issues</url>
-  <url type="help">https://gamemaker19.github.io/MMXOnlineDesktop/help.html</url>
+  <url type="help">https://github.com/Walt-5D/MMXOD-Vanilla-Flatpak-Linux/blob/main/help.md</url>
   <url type="vcs-browser">https://github.com/Walt-5D/MMXOD-Vanilla-Flatpak-Linux</url>
 
   <launchable type="desktop-id">org.mmxod.MMXOD.desktop</launchable>
@@ -79,7 +77,10 @@
     <category>ActionGame</category>
   </categories>
 
-  <content_rating type="oars-1.1" />
+  <content_rating type="oars-1.1">
+    <content_attribute id="violence-cartoon">mild</content_attribute>
+    <content_attribute id="violence-fantasy">mild</content_attribute>
+  </content_rating>
 
   <releases>
     <release version="19.12" date="2026-09-08"/>
