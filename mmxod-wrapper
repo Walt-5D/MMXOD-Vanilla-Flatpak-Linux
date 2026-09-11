@@ -3,43 +3,30 @@ SRC_GAME_DIR=$(find /app/share/mmxod -maxdepth 2 -name "MMX" -exec dirname {} \;
 DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/mmxod"
 
 mkdir -p "$DATA_DIR"
-
-# Limpiar librerías nativas viejas
 rm -f "$DATA_DIR"/libcsfml-*.so* "$DATA_DIR"/libsfml-*.so* "$DATA_DIR"/csfml-*.so* 2>/dev/null || true
-
-# Copiar archivos base sin sobrescribir guardados
 cp -rn "$SRC_GAME_DIR"/* "$DATA_DIR"/ 2>/dev/null || true
 
-# Configurar variables de entorno
-export DISPLAY="${DISPLAY:-:0}"
 export LD_LIBRARY_PATH=/app/lib:$DATA_DIR:$LD_LIBRARY_PATH
 
-# Ir al directorio del juego
 REAL_GAME_DIR=$(find "$DATA_DIR" -maxdepth 2 -name "MMX" -exec dirname {} \; | head -n 1)
 cd "${REAL_GAME_DIR:-$DATA_DIR}"
 chmod +x MMX
 
-# Ejecutar el juego en primer plano
-./MMX "$@" &
-GAME_PID=$!
-
-# Bucle de reactivación de inactividad mientras el juego esté abierto
+# Bucle de latido ajustado a 20 segundos para evitar el oscurecimiento previo
 (
-  while kill -0 "$GAME_PID" 2>/dev/null; do
+  while true; do
     gdbus call --session \
       --dest org.freedesktop.ScreenSaver \
       --object-path /org/freedesktop/ScreenSaver \
       --method org.freedesktop.ScreenSaver.SimulateUserActivity >/dev/null 2>&1 || true
-    sleep 10
+    sleep 20
   done
 ) &
-IDLE_PID=$!
+KEEPAWAKE_PID=$!
 
-# Asegurar que el subproceso muera siempre al salir del script
-trap 'kill -9 "$IDLE_PID" 2>/dev/null || true' EXIT INT TERM
-
-# Esperar a que el juego termine
-wait "$GAME_PID"
+# Ejecutar ejecutable principal en primer plano silenciando advertencias
+./MMX "$@" 2>/dev/null
 EXIT_CODE=$?
 
+kill $KEEPAWAKE_PID 2>/dev/null || true
 exit $EXIT_CODE
