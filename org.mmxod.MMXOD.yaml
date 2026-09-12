@@ -70,13 +70,12 @@ modules:
   - name: mmxod
     buildsystem: simple
     build-commands:
-      # Create necessary directories
       - install -d /app/bin
       - install -d /app/share/mmxod
-      # Copy all extracted game files to the app directory
-      - cp -r * /app/share/mmxod/
-      # Find the game directory and replace its bundled SFML/CSFML libraries
-      # with the newly compiled versions to ensure Flatpak compatibility.
+      # Copy ONLY the contents from the isolated 'game-data' folder
+      - cp -r game-data/* /app/share/mmxod/
+      # Locate the game directory dynamically and replace its bundled,
+      # incompatible SFML/CSFML binaries with the modern compiled versions.
       - |
         GAME_DIR=$(find /app/share/mmxod -maxdepth 2 -name "MMX" -exec dirname {} \; | head -n 1)
         if [ -n "$GAME_DIR" ]; then
@@ -84,15 +83,18 @@ modules:
           cp -f /app/lib/libcsfml-*.so* "$GAME_DIR"/ 2>/dev/null || true
           cp -f /app/lib/libsfml-*.so* "$GAME_DIR"/ 2>/dev/null || true
         fi
-      # Install integration files (wrapper script, desktop entry, icon, and metainfo)
+      # Install desktop integration files directly from the build root
       - install -Dm755 mmxod-wrapper /app/bin/mmxod-wrapper
       - install -Dm644 org.mmxod.MMXOD.desktop /app/share/applications/org.mmxod.MMXOD.desktop
       - install -Dm644 org.mmxod.MMXOD.png /app/share/icons/hicolor/512x512/apps/org.mmxod.MMXOD.png
       - install -Dm644 org.mmxod.MMXOD.metainfo.xml /app/share/metainfo/org.mmxod.MMXOD.metainfo.xml
     sources:
+      # Pre-compiled upstream game package isolated via 'dest' to prevent
+      # root directory pollution and keep wrapper/metadata files separate.
       - type: archive
         url: https://github.com/Walt-5D/MMXOD-Vanilla-Flatpak-Linux/releases/download/v19.12/mmxod-linux.zip
         sha256: a78e5202cdb463a751b6e3ebf9d1f9ba6a0d7d37e8e4ec7fb155dda1e3f8cc9e
+        dest: game-data
       - type: file
         path: mmxod-wrapper
       - type: file
