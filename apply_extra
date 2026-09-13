@@ -1,12 +1,14 @@
 #!/bin/sh
 set -e
 
-# Directorio de destino dentro del sandbox
 DEST="/app/share/mmxod"
 mkdir -p "$DEST"
 
-# Extraer el contenido del archivo de Debian descargado
-bsdtar -xf "$1" -C "$DEST"
+# Extract the contents of the downloaded Debian archive
+bsdtar -xf debian_game.zip -C "$DEST"
 
-# Extraer el contenido de la versión de Windows para extraer los assets
-bsdtar -xf "$2" -C "$DEST"
+# Extract Windows contents to a temporary directory to copy only the assets
+mkdir -p /tmp/win_temp
+bsdtar -xf win_game.zip -C /tmp/win_temp
+cp -r /tmp/win_temp/assets "$DEST/"
+rm -rf /tmp/win_temp

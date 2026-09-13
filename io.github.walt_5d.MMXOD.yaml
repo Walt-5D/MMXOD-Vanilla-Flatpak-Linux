@@ -72,20 +72,6 @@ modules:
     build-commands:
       - install -d /app/bin
       - install -d /app/share/mmxod
-      
-      # Copiar assets y archivos extraídos por apply_extra
-      - cp -r debian_src/* /app/share/mmxod/ 2>/dev/null || true
-      - cp -r win_src/assets /app/share/mmxod/ 2>/dev/null || true
-      
-      # Reemplazar SFML/CSFML modernos
-      - |
-        GAME_DIR=$(find /app/share/mmxod -maxdepth 2 -name "MMX" -exec dirname {} \; | head -n 1)
-        if [ -n "$GAME_DIR" ]; then
-          rm -f "$GAME_DIR"/libcsfml-*.so* "$GAME_DIR"/libsfml-*.so* "$GAME_DIR"/csfml-*.so* 2>/dev/null || true
-          cp -f /app/lib/libcsfml-*.so* "$GAME_DIR"/ 2>/dev/null || true
-          cp -f /app/lib/libsfml-*.so* "$GAME_DIR"/ 2>/dev/null || true
-        fi
-        
       - install -Dm755 mmxod-wrapper /app/bin/mmxod-wrapper
       - install -Dm644 io.github.walt_5d.MMXOD.desktop /app/share/applications/io.github.walt_5d.MMXOD.desktop
       - install -Dm644 io.github.walt_5d.MMXOD.png /app/share/icons/hicolor/512x512/apps/io.github.walt_5d.MMXOD.png
@@ -98,14 +84,12 @@ modules:
         sha256: 8d0ed96a35f877bdc8d1977a63e5fe185079ed3b747d896a7c46c97b0794e6e5
         size: 30510486
         filename: debian_game.zip
-        dest: debian_src
 
       - type: extra-data
         url: https://github.com/gamemaker19/MMXOnline/releases/download/v19.12/MMXOnlineV19_12_win_x86_sc.zip
         sha256: 6774ad22eeab01b9867b482177df52eba9c5f66b451fbe4be2cc536f381eee63
         size: 151183330
         filename: win_game.zip
-        dest: win_src
 
       - type: file
         path: mmxod-wrapper
