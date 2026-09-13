@@ -1,0 +1,12 @@
+#!/bin/sh
+set -e
+
+# Directorio de destino dentro del sandbox
+DEST="/app/share/mmxod"
+mkdir -p "$DEST"
+
+# Extraer el contenido del archivo de Debian descargado
+bsdtar -xf "$1" -C "$DEST"
+
+# Extraer el contenido de la versión de Windows para extraer los assets
+bsdtar -xf "$2" -C "$DEST"
