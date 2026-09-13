@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Find the read-only game directory inside the Flatpak app
-SRC_GAME_DIR=$(find /app/share/mmxod -maxdepth 2 -name "MMX" -exec dirname {} \; | head -n 1)
+SRC_GAME_DIR=$(find /app/extra -maxdepth 2 -name "MMX" -exec dirname {} \; | head -n 1)
 
 # Define the writable user data directory (XDG compliant)
 DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/mmxod"
@@ -15,8 +15,28 @@ rm -f "$DATA_DIR"/libcsfml-*.so* "$DATA_DIR"/libsfml-*.so* "$DATA_DIR"/csfml-*.s
 # Copy game assets to the user data directory without overwriting existing user files (using -n)
 cp -rn "$SRC_GAME_DIR"/* "$DATA_DIR"/ 2>/dev/null || true
 
-# Ensure the game finds both Flatpak-provided libraries and its own bundled libraries
-export LD_LIBRARY_PATH=/app/lib:$DATA_DIR:$LD_LIBRARY_PATH
+# Copy SFML and CSFML libraries from /app/lib to the game directory and create unversioned symlinks for .NET
+cp -P /app/lib/libcsfml-*.so* "$DATA_DIR"/ 2>/dev/null || true
+cp -P /app/lib/libsfml-*.so* "$DATA_DIR"/ 2>/dev/null || true
+
+for lib in "$DATA_DIR"/libcsfml-*.so.*.*.*; do
+    [ -e "$lib" ] || continue
+    base=$(echo "$lib" | sed -E 's/\.so\.[0-9]+\.[0-9]+\.[0-9]+//')
+    if [ ! -e "$base.so" ]; then
+        ln -s "$(basename "$lib")" "$base.so"
+    fi
+done
+
+for lib in "$DATA_DIR"/libsfml-*.so.*.*.*; do
+    [ -e "$lib" ] || continue
+    base=$(echo "$lib" | sed -E 's/\.so\.[0-9]+\.[0-9]+\.[0-9]+//')
+    if [ ! -e "$base.so" ]; then
+        ln -s "$(basename "$lib")" "$base.so"
+    fi
+done
+
+# Ensure the game finds both Flatpak-provided libraries and local ones
+export LD_LIBRARY_PATH=$DATA_DIR:/app/lib:$LD_LIBRARY_PATH
 
 # Navigate to the actual game directory within the writable user data
 REAL_GAME_DIR=$(find "$DATA_DIR" -maxdepth 2 -name "MMX" -exec dirname {} \; | head -n 1)
@@ -25,8 +45,7 @@ cd "${REAL_GAME_DIR:-$DATA_DIR}"
 # Ensure the main binary has execution permissions
 chmod +x MMX
 
-# Request a persistent screen suspension lock via D-Bus using Python to hold the connection open,
-# matching how modern browsers and media players prevent idle suspension across various desktop environments (GNOME, KDE, Cinnamon).
+# Request a persistent screen suspension lock via D-Bus using Python to hold the connection open
 python3 -c '
 import sys
 import time
@@ -43,16 +62,14 @@ try:
         "org.freedesktop.ScreenSaver",
         None
     )
-    # Inhibit idle suspension
     cookie = proxy.call_sync(
         "Inhibit",
         GLib.Variant("(ss)", ("io.github.walt_5d.MMXOD", "Playing game")),
-        Gio.DBusCallFlags.NONE,
+        Gio.BusCallFlags.NONE,
         -1,
         None
     ).unpack()[0]
     
-    # Keep the process alive and maintain the D-Bus connection until killed
     while True:
         time.sleep(3600)
 except Exception as e:
@@ -60,11 +77,10 @@ except Exception as e:
 ' &
 KEEPAWAKE_PID=$!
 
-# Execute the main game binary in the foreground and silence standard error
-./MMX "$@" 2>/dev/null
+# Execute the main game binary in the foreground
+./MMX "$@"
 EXIT_CODE=$?
 
-# Terminate the background keep-awake process to release the D-Bus inhibit lock
 kill $KEEPAWAKE_PID 2>/dev/null || true
 wait $KEEPAWAKE_PID 2>/dev/null || true
 

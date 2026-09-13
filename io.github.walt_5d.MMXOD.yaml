@@ -71,7 +71,6 @@ modules:
     buildsystem: simple
     build-commands:
       - install -d /app/bin
-      - install -d /app/share/mmxod
       - install -Dm755 mmxod-wrapper /app/bin/mmxod-wrapper
       - install -Dm644 io.github.walt_5d.MMXOD.desktop /app/share/applications/io.github.walt_5d.MMXOD.desktop
       - install -Dm644 io.github.walt_5d.MMXOD.png /app/share/icons/hicolor/512x512/apps/io.github.walt_5d.MMXOD.png
