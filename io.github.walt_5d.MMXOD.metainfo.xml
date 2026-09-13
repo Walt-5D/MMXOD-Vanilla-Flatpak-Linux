@@ -7,13 +7,13 @@
   <project_license>LicenseRef-proprietary</project_license>
 
   <!-- Application Name -->
-  <name>Mega Man X Online: Deathmatch</name>
+  <name>Mega Man X Online: Deathmatch (Unofficial Fan Game)</name>
 
   <!-- Short summary in multiple languages -->
-  <summary>Multiplayer 2D platform shooter game</summary>
-  <summary xml:lang="es">Juego de disparos y plataformas 2D multijugador</summary>
-  <summary xml:lang="pt">Jogo de tiro e plataforma 2D multijogador</summary>
-  <summary xml:lang="fr">Jeu de tir et de plateforme 2D multijoueur</summary>
+  <summary>Unofficial fan-made 2D platform shooter game</summary>
+  <summary xml:lang="es">Juego de disparos y plataformas 2D no oficial creado por fans</summary>
+  <summary xml:lang="pt">Jogo de tiro e plataforma 2D não oficial feito por fãs</summary>
+  <summary xml:lang="fr">Jeu de tir et de plateforme 2D non officiel créé par des fans</summary>
 
   <!-- Detailed description in multiple languages -->
   <description>
@@ -28,6 +28,12 @@
     </p>
     <p xml:lang="fr">
       Mega Man X Online: Deathmatch est un jeu d'action multijoueur en 2D inspiré de la série Mega Man X, avec des combats rapides, plusieurs personnages et des arènes personnalisées.
+    </p>
+    <p>
+      Disclaimer: This is an unofficial, community-maintained fan project created for preservation purposes. It is not affiliated with, endorsed by, or associated with Capcom. All original intellectual properties and characters belong to their respective owners.
+    </p>
+    <p xml:lang="es">
+      Aviso legal: Este es un proyecto no oficial mantenido por la comunidad con fines de preservación. No está afiliado, respaldado ni asociado con Capcom. Todas las propiedades intelectuales y personajes originales pertenecen a sus respectivos dueños.
     </p>
   </description>
 
@@ -48,17 +54,17 @@
       <image type="source">https://raw.githubusercontent.com/Walt-5D/MMXOD-Vanilla-Flatpak-Linux/v19.12/Images/gameplay1.png</image>
     </screenshot>
     <screenshot>
-      <caption>Ride Armor and Special Attacks</caption>
-      <caption xml:lang="es">Uso de Ride Armor y ataques especiales</caption>
-      <caption xml:lang="pt">Uso de Ride Armor e ataques especiais</caption>
-      <caption xml:lang="fr">Utilisation du Ride Armor et attaques spéciales</caption>
-      <image type="source">https://raw.githubusercontent.com/Walt-5D/MMXOD-Vanilla-Flatpak-Linux/v19.12/Images/gameplay2.png</image>
-    </screenshot>
-    <screenshot>
       <caption>Snow Mountain Stage Combat</caption>
       <caption xml:lang="es">Batalla en el escenario de montaña nevada</caption>
       <caption xml:lang="pt">Batalha no cenário de montanha nevada</caption>
       <caption xml:lang="fr">Combat dans la montagne enneigée</caption>
+      <image type="source">https://raw.githubusercontent.com/Walt-5D/MMXOD-Vanilla-Flatpak-Linux/v19.12/Images/gameplay2.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Ride Armor and Special Attacks</caption>
+      <caption xml:lang="es">Uso de Ride Armor y ataques especiales</caption>
+      <caption xml:lang="pt">Uso de Ride Armor e ataques especiais</caption>
+      <caption xml:lang="fr">Utilisation du Ride Armor et attaques spéciales</caption>
       <image type="source">https://raw.githubusercontent.com/Walt-5D/MMXOD-Vanilla-Flatpak-Linux/v19.12/Images/gameplay3.png</image>
     </screenshot>
   </screenshots>
@@ -74,6 +80,11 @@
 
   <!-- Desktop file mapping -->
   <launchable type="desktop-id">io.github.walt_5d.MMXOD.desktop</launchable>
+
+  <!-- Custom metadata flags for Flathub reviewers -->
+  <custom>
+    <value key="flathub::manifest::type">extra-data</value>
+  </custom>
 
   <!-- Store categories -->
   <categories>
