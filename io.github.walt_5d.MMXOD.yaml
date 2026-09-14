@@ -16,8 +16,12 @@ finish-args:
   - --filesystem=xdg-run/pipewire-0
   # Gamepad and controller support
   - --device=input
-  # Required to inhibit screensaver via D-Bus in the wrapper script
+  # Fallback to inhibit screen blanking on desktops (XFCE, MATE, etc.) whose
+  # xdg-desktop-portal backend doesn't fully implement org.freedesktop.portal.Inhibit
   - --talk-name=org.freedesktop.ScreenSaver
+  # Fallback to inhibit idle-triggered suspend on GNOME/Cinnamon session managers
+  # (this is the actual decision-maker for suspend-on-inactivity on those desktops)
+  - --talk-name=org.gnome.SessionManager
 
 modules:
   # The pre-compiled game binary requires legacy OpenSSL 1.1,
