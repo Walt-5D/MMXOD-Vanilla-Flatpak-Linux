@@ -70,9 +70,9 @@
   </screenshots>
 
   <!-- Original developer credits -->
-  <developer>
-  <name>gamemaker19</name>
-</developer>
+  <developer id="io.github.gamemaker19">
+    <name>gamemaker19</name>
+  </developer>
 
   <!-- Project and help URLs -->
   <url type="homepage">https://gamemaker19.github.io/MMXOnlineDesktop/</url>
