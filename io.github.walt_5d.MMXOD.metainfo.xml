@@ -7,7 +7,7 @@
   <project_license>LicenseRef-proprietary</project_license>
 
   <!-- Application Name -->
-  <name>Mega Man X Online: Deathmatch (Unofficial Fan Game)</name>
+  <name>Mega Man X Online: Deathmatch</name>
 
   <!-- Short summary in multiple languages -->
   <summary>Unofficial fan-made 2D platform shooter game</summary>
@@ -37,40 +37,42 @@
     </p>
   </description>
 
-  <!-- Screenshots pinned to the v19.12 tag to prevent broken links -->
+  <!-- Screenshots hosted on GitHub Pages for static HTTP compliance -->
   <screenshots>
     <screenshot type="default">
       <caption>Mega Man X Online: Deathmatch Poster</caption>
       <caption xml:lang="es">Arte promocional de Mega Man X Online: Deathmatch</caption>
       <caption xml:lang="pt">Arte promocional de Mega Man X Online: Deathmatch</caption>
       <caption xml:lang="fr">Affiche promotionnelle de Mega Man X Online: Deathmatch</caption>
-      <image type="source">https://raw.githubusercontent.com/Walt-5D/MMXOD-Vanilla-Flatpak-Linux/v19.12/Images/cover.png</image>
+      <image type="source">https://walt-5d.github.io/MMXOD-Vanilla-Flatpak-Linux/Images/cover.png</image>
     </screenshot>
     <screenshot>
       <caption>Futuristic Arena Multiplayer Action</caption>
       <caption xml:lang="es">Combate multijugador en arena futurista</caption>
       <caption xml:lang="pt">Combate multijogador em arena futurista</caption>
       <caption xml:lang="fr">Action multijoueur dans une arène futuriste</caption>
-      <image type="source">https://raw.githubusercontent.com/Walt-5D/MMXOD-Vanilla-Flatpak-Linux/v19.12/Images/gameplay1.png</image>
+      <image type="source">https://walt-5d.github.io/MMXOD-Vanilla-Flatpak-Linux/Images/gameplay1.png</image>
     </screenshot>
     <screenshot>
       <caption>Snow Mountain Stage Combat</caption>
       <caption xml:lang="es">Batalla en el escenario de montaña nevada</caption>
       <caption xml:lang="pt">Batalha no cenário de montanha nevada</caption>
       <caption xml:lang="fr">Combat dans la montagne enneigée</caption>
-      <image type="source">https://raw.githubusercontent.com/Walt-5D/MMXOD-Vanilla-Flatpak-Linux/v19.12/Images/gameplay2.png</image>
+      <image type="source">https://walt-5d.github.io/MMXOD-Vanilla-Flatpak-Linux/Images/gameplay2.png</image>
     </screenshot>
     <screenshot>
       <caption>Ride Armor and Special Attacks</caption>
       <caption xml:lang="es">Uso de Ride Armor y ataques especiales</caption>
       <caption xml:lang="pt">Uso de Ride Armor e ataques especiais</caption>
       <caption xml:lang="fr">Utilisation du Ride Armor et attaques spéciales</caption>
-      <image type="source">https://raw.githubusercontent.com/Walt-5D/MMXOD-Vanilla-Flatpak-Linux/v19.12/Images/gameplay3.png</image>
+      <image type="source">https://walt-5d.github.io/MMXOD-Vanilla-Flatpak-Linux/Images/gameplay3.png</image>
     </screenshot>
   </screenshots>
 
   <!-- Original developer credits -->
-  <developer_name>gamemaker19</developer_name>
+  <developer>
+  <name>gamemaker19</name>
+</developer>
 
   <!-- Project and help URLs -->
   <url type="homepage">https://gamemaker19.github.io/MMXOnlineDesktop/</url>

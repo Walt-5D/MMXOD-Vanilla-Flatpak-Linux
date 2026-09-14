@@ -11,9 +11,8 @@ finish-args:
   - --device=dri
   # Multiplayer network access
   - --share=network
-  # Audio support (PulseAudio and PipeWire)
+  # Audio support
   - --socket=pulseaudio
-  - --filesystem=xdg-run/pipewire-0
   # Gamepad and controller support
   - --device=input
   # Fallback to inhibit screen blanking on desktops (XFCE, MATE, etc.) whose

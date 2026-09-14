@@ -70,7 +70,7 @@ trap '
         gdbus call --session --dest org.freedesktop.portal.Desktop --object-path "$PORTAL_REQ" --method org.freedesktop.portal.Request.Close >/dev/null 2>&1 || true
     fi
     if [ -n "$SS_COOKIE" ]; then
-        gdbus call --session --dest org.freedesktop.ScreenSaver --object-path /org/freedesktop/ScreenSaver --method org.freedesktop.ScreenSaver.UnInhibit "$SS_COOKIE" >/dev/null 2>&1 || true
+        gdbus call --session --dest org.freedesktop.ScreenSaver --object-path /org/freedesktop/ScreenSaver --method org.freedesktop.ScreenSaver.Uninhibit "$SS_COOKIE" >/dev/null 2>&1 || true
     fi
     if [ -n "$GSM_COOKIE" ]; then
         gdbus call --session --dest org.gnome.SessionManager --object-path /org/gnome/SessionManager --method org.gnome.SessionManager.Uninhibit "$GSM_COOKIE" >/dev/null 2>&1 || true
