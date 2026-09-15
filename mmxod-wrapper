@@ -1,0 +1,94 @@
+#!/bin/sh
+
+# Find the read-only game directory inside the Flatpak app
+SRC_GAME_DIR=$(find /app/extra -maxdepth 2 -name "MMX" -exec dirname {} \; | head -n 1)
+
+# Define the writable user data directory (XDG compliant)
+DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/mmxod"
+
+# Create the user data directory if it doesn't exist
+mkdir -p "$DATA_DIR"
+
+# Clean up old dynamic libraries from previous runs to prevent version conflicts
+rm -f "$DATA_DIR"/libcsfml-*.so* "$DATA_DIR"/libsfml-*.so* "$DATA_DIR"/csfml-*.so* 2>/dev/null || true
+
+# Copy game assets to the user data directory without overwriting existing user files (using -n)
+cp -rn "$SRC_GAME_DIR"/* "$DATA_DIR"/ 2>/dev/null || true
+
+# Copy SFML and CSFML libraries from /app/lib to the game directory and create unversioned symlinks for .NET
+cp -P /app/lib/libcsfml-*.so* "$DATA_DIR"/ 2>/dev/null || true
+cp -P /app/lib/libsfml-*.so* "$DATA_DIR"/ 2>/dev/null || true
+
+for lib in "$DATA_DIR"/libcsfml-*.so.*.*.*; do
+    [ -e "$lib" ] || continue
+    base=$(echo "$lib" | sed -E 's/\.so\.[0-9]+\.[0-9]+\.[0-9]+//')
+    if [ ! -e "$base.so" ]; then
+        ln -s "$(basename "$lib")" "$base.so"
+    fi
+done
+
+for lib in "$DATA_DIR"/libsfml-*.so.*.*.*; do
+    [ -e "$lib" ] || continue
+    base=$(echo "$lib" | sed -E 's/\.so\.[0-9]+\.[0-9]+\.[0-9]+//')
+    if [ ! -e "$base.so" ]; then
+        ln -s "$(basename "$lib")" "$base.so"
+    fi
+done
+
+# --- Inhibit system suspend / screen blanking while the game runs ---
+
+# Primary: XDG Desktop Portal Inhibit (flags 4 = suspend, 8 = idle => 12).
+# Works well on GNOME/KDE where the portal backend implements Inhibit.
+PORTAL_REQ=$(gdbus call --session \
+    --dest org.freedesktop.portal.Desktop \
+    --object-path /org/freedesktop/portal/desktop \
+    --method org.freedesktop.portal.Inhibit \
+    "" 12 "{'reason': <'Game is running'>}" 2>/dev/null | grep -oE "'/[^']+'" | tr -d "'" || true)
+
+# Fallback: classic org.freedesktop.ScreenSaver interface. Needed on
+# Cinnamon/XFCE/MATE and other desktops whose xdg-desktop-portal backend
+# doesn't fully implement org.freedesktop.portal.Inhibit.
+SS_COOKIE=$(gdbus call --session \
+    --dest org.freedesktop.ScreenSaver \
+    --object-path /org/freedesktop/ScreenSaver \
+    --method org.freedesktop.ScreenSaver.Inhibit \
+    "io.github.walt_5d.MMXOD" "Game is running" 2>/dev/null | grep -oE '[0-9]+' || true)
+
+# Fallback 2: org.gnome.SessionManager.Inhibit (flags 4=suspend, 8=idle => 12).
+# This is the actual authority over idle-triggered suspend on GNOME and
+# Cinnamon (cinnamon-session implements the same interface as gnome-session),
+# which the classic ScreenSaver interface alone does not cover.
+GSM_COOKIE=$(gdbus call --session \
+    --dest org.gnome.SessionManager \
+    --object-path /org/gnome/SessionManager \
+    --method org.gnome.SessionManager.Inhibit \
+    "io.github.walt_5d.MMXOD" 0 "Game is running" 12 2>/dev/null | grep -oE '[0-9]+' || true)
+
+# Release all inhibitors reliably on exit, interrupt, or crash
+trap '
+    if [ -n "$PORTAL_REQ" ]; then
+        gdbus call --session --dest org.freedesktop.portal.Desktop --object-path "$PORTAL_REQ" --method org.freedesktop.portal.Request.Close >/dev/null 2>&1 || true
+    fi
+    if [ -n "$SS_COOKIE" ]; then
+        gdbus call --session --dest org.freedesktop.ScreenSaver --object-path /org/freedesktop/ScreenSaver --method org.freedesktop.ScreenSaver.UnInhibit "$SS_COOKIE" >/dev/null 2>&1 || true
+    fi
+    if [ -n "$GSM_COOKIE" ]; then
+        gdbus call --session --dest org.gnome.SessionManager --object-path /org/gnome/SessionManager --method org.gnome.SessionManager.Uninhibit "$GSM_COOKIE" >/dev/null 2>&1 || true
+    fi
+' EXIT INT TERM
+
+# Ensure the game finds both Flatpak-provided libraries and local ones
+export LD_LIBRARY_PATH=$DATA_DIR:/app/lib:$LD_LIBRARY_PATH
+
+# Navigate to the actual game directory within the writable user data
+REAL_GAME_DIR=$(find "$DATA_DIR" -maxdepth 2 -name "MMX" -exec dirname {} \; | head -n 1)
+cd "${REAL_GAME_DIR:-$DATA_DIR}"
+
+# Ensure the main binary has execution permissions
+chmod +x MMX
+
+# Execute the main game binary in the foreground
+./MMX "$@"
+EXIT_CODE=$?
+
+exit $EXIT_CODE

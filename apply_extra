@@ -1,0 +1,22 @@
+#!/bin/sh
+set -e
+
+# Extract the base Debian archive in the current directory
+bsdtar -xf debian_game.zip
+
+# Extract Windows assets into a temporary folder
+mkdir -p /tmp/win_temp
+bsdtar -xf win_game.zip -C /tmp/win_temp
+
+# Find the exact path where the MMX executable was extracted
+DEBIAN_DIR=$(find . -maxdepth 2 -name "MMX" -exec dirname {} \; | head -n 1)
+WIN_ASSETS=$(find /tmp/win_temp -maxdepth 2 -type d -name "assets" | head -n 1)
+
+# Move the assets to the game directory
+if [ -n "$DEBIAN_DIR" ] && [ -n "$WIN_ASSETS" ]; then
+    cp -r "$WIN_ASSETS" "$DEBIAN_DIR/"
+fi
+
+# Clean up original files to save space
+rm -rf /tmp/win_temp
+rm debian_game.zip win_game.zip
