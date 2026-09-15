@@ -1,0 +1,133 @@
+app-id: io.github.walt_5d.MMXOD
+runtime: org.freedesktop.Platform
+runtime-version: '24.08'
+sdk: org.freedesktop.Sdk
+command: mmxod-wrapper
+
+finish-args:
+  # Graphics and windowing
+  - --socket=fallback-x11
+  - --socket=wayland
+  - --share=ipc
+  - --device=dri
+  # Multiplayer network access
+  - --share=network
+  # Audio support
+  - --socket=pulseaudio
+  # Gamepad and controller support
+  - --device=input
+  # Environment variable for OpenAL
+  - --env=ALSOFT_DRIVERS=pulse
+  # Power management / Screen saver inhibition portal
+  - --talk-name=org.freedesktop.portal.Desktop
+  - --talk-name=org.freedesktop.ScreenSaver
+  - --talk-name=org.gnome.SessionManager
+  - --talk-name=org.cinnamon.ScreenSaver
+
+modules:
+  # OpenAL library
+  - name: openal-soft
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DCMAKE_INSTALL_LIBDIR=lib
+      - -DALSOFT_EXAMPLES=OFF
+      - -DALSOFT_UTILS=OFF
+    cleanup:
+      - /include
+      - /lib/pkgconfig
+      - /lib/cmake
+      - /share
+    sources:
+      - type: archive
+        url: https://openal-soft.org/openal-releases/openal-soft-1.23.1.tar.bz2
+        sha256: 796f4b89134c4e57270b7f0d755f0fa3435b90da437b745160a49bd41c845b21
+
+  # OpenSSL 1.1
+  - name: openssl-1.1
+    buildsystem: simple
+    build-commands:
+      - ./config --prefix=/app --openssldir=/app/etc/ssl shared no-tests
+      - make -j$(nproc)
+      - make install_sw
+    cleanup:
+      - /include
+      - /bin
+      - /lib/pkgconfig
+      - /lib/engines-1.1
+    sources:
+      - type: archive
+        url: https://www.openssl.org/source/openssl-1.1.1w.tar.gz
+        sha256: cf3098950cb4d853ad95c0841f1f9c6d3dc102dccfcacd521d93925208b76ac8
+
+  # Kerberos GSSAPI
+  - name: krb5
+    buildsystem: autotools
+    subdir: src
+    config-opts:
+      - --without-ldap
+      - --without-tcl
+      - --disable-rpath
+    cleanup:
+      - /include
+      - /bin
+      - /sbin
+      - /share
+      - /lib/pkgconfig
+    sources:
+      - type: archive
+        url: https://kerberos.org/dist/krb5/1.21/krb5-1.21.2.tar.gz
+        sha256: 9560941a9d843c0243a71b17a7ac6fe31c7cebb5bce3983db79e52ae7e850491
+
+  # FLAC library
+  - name: flac
+    buildsystem: autotools
+    config-opts:
+      - --disable-cpplibs
+      - --disable-programs
+    cleanup:
+      - /include
+      - /bin
+      - /share
+      - /lib/pkgconfig
+      - /lib/*.la
+    sources:
+      - type: archive
+        url: https://downloads.xiph.org/releases/flac/flac-1.3.3.tar.xz
+        sha256: 213e82bd716c9de6db2f98bcadbc4c24c7e2efe8c75939a1a84e28539c4e1748
+
+# The game itself
+  - name: mmxod
+    buildsystem: simple
+    build-commands:
+      - install -d /app/share/mmxod
+      - cp -a game/. /app/share/mmxod/
+      - chmod +x /app/share/mmxod/MMX
+
+      # Fix SFML symlinks
+      - for name in audio graphics system window; do rm -f /app/share/mmxod/libsfml-$name.so /app/share/mmxod/libsfml-$name.so.2.5; ln -s libsfml-$name.so.2.5.1 /app/share/mmxod/libsfml-$name.so.2.5; ln -s libsfml-$name.so.2.5.1 /app/share/mmxod/libsfml-$name.so; done
+
+      # Copy libraries and give them execute permissions
+      - cp -a /app/share/mmxod/libsfml-*.so* /app/lib/
+      - cp -a /app/share/mmxod/libcsfml-*.so /app/lib/
+      - chmod +x /app/lib/lib*sfml*.so*
+
+      # Cleanup & wrappers
+      - rm -f /app/share/mmxod/GetShaderErrors.bat /app/share/mmxod/Help.url
+      - rm -f /app/share/mmxod/*.pdb
+      - install -Dm755 mmxod-wrapper /app/bin/mmxod-wrapper
+      - install -Dm644 io.github.walt_5d.MMXOD.desktop /app/share/applications/io.github.walt_5d.MMXOD.desktop
+      - install -Dm644 io.github.walt_5d.MMXOD.png /app/share/icons/hicolor/512x512/apps/io.github.walt_5d.MMXOD.png
+      - install -Dm644 io.github.walt_5d.MMXOD.metainfo.xml /app/share/metainfo/io.github.walt_5d.MMXOD.metainfo.xml
+    sources:
+      - type: dir
+        path: game
+        dest: game
+      - type: file
+        path: mmxod-wrapper
+      - type: file
+        path: io.github.walt_5d.MMXOD.desktop
+      - type: file
+        path: io.github.walt_5d.MMXOD.png
+      - type: file
+        path: io.github.walt_5d.MMXOD.metainfo.xml

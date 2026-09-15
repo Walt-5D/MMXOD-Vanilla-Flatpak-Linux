@@ -1,0 +1,52 @@
+#!/bin/sh
+SRC_GAME_DIR="/app/share/mmxod"
+DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/mmxod"
+
+mkdir -p "$DATA_DIR"
+cp -rn "$SRC_GAME_DIR"/. "$DATA_DIR"/ 2>/dev/null || true
+
+export ALSOFT_DRIVERS="pulse"
+export LD_LIBRARY_PATH="/app/lib:$DATA_DIR:$LD_LIBRARY_PATH"
+
+cd "$DATA_DIR" || exit 1
+chmod +x MMX 2>/dev/null || true
+
+# --- INHIBIDOR EN SEGUNDO PLANO ---
+python3 -c "
+import gi
+from gi.repository import Gio, GLib
+
+bus = Gio.bus_get_sync(Gio.BusType.SESSION, None)
+flags = Gio.DBusCallFlags.NONE
+app_id = 'io.github.walt_5d.MMXOD'
+reason = 'Juego en ejecucion'
+
+# 1. Estándar Freedesktop (Cinnamon, KDE, XFCE, MATE)
+try:
+    bus.call_sync('org.freedesktop.ScreenSaver', '/org/freedesktop/ScreenSaver', 
+                  'org.freedesktop.ScreenSaver', 'Inhibit', 
+                  GLib.Variant('(ss)', (app_id, reason)), None, flags, -1, None)
+except Exception:
+    pass
+
+# 2. Estricto GNOME (Ubuntu, Fedora, etc.)
+try:
+    bus.call_sync('org.gnome.SessionManager', '/org/gnome/SessionManager', 
+                  'org.gnome.SessionManager', 'Inhibit', 
+                  GLib.Variant('(susu)', (app_id, 0, reason, 8)), None, flags, -1, None)
+except Exception:
+    pass
+
+loop = GLib.MainLoop()
+loop.run()
+" &
+INHIBIT_PID=$!
+
+# Matar el proceso de Python al salir para liberar el bloqueo
+trap 'kill $INHIBIT_PID 2>/dev/null || true' EXIT INT TERM
+
+# Ejecutar el juego
+./MMX "$@"
+EXIT_CODE=$?
+
+exit $EXIT_CODE
