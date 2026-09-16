@@ -6,8 +6,7 @@ command: mmxod-wrapper
 
 finish-args:
   # Graphics and windowing
-  - --socket=fallback-x11
-  - --socket=wayland
+  - --socket=x11
   - --share=ipc
   - --device=dri
   # Multiplayer network access
