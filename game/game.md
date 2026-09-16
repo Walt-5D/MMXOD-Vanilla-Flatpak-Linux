@@ -1,4 +1,4 @@
-# MMXOnline Installation Guide / Guía de Instalación
+# `game` folder Guide / Guía
 
 Please select your language / Por favor, selecciona tu idioma:
 
