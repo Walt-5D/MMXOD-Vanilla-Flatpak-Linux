@@ -15,13 +15,12 @@ finish-args:
   - --socket=pulseaudio
   # Gamepad and controller support
   - --device=input
-  # Environment variable for OpenAL
-  - --env=ALSOFT_DRIVERS=pulse
-  # Power management / Screen saver inhibition portal
-  - --talk-name=org.freedesktop.portal.Desktop
+  # Screen saver / session idle inhibition (GNOME, Cinnamon, KDE, XFCE, MATE)
   - --talk-name=org.freedesktop.ScreenSaver
   - --talk-name=org.gnome.SessionManager
-  - --talk-name=org.cinnamon.ScreenSaver
+  # systemd-logind inhibitor fallback for minimal window managers with no
+  # desktop shell implementing either interface above (sway, Hyprland, i3)
+  - --system-talk-name=org.freedesktop.login1
 
 modules:
   # OpenAL library
@@ -95,7 +94,7 @@ modules:
         url: https://downloads.xiph.org/releases/flac/flac-1.3.3.tar.xz
         sha256: 213e82bd716c9de6db2f98bcadbc4c24c7e2efe8c75939a1a84e28539c4e1748
 
-# The game itself
+  # The game itself
   - name: mmxod
     buildsystem: simple
     build-commands:

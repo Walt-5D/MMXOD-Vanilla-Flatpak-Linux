@@ -38,14 +38,14 @@
     </screenshot>
   </screenshots>
 
-  <developer id="io.github.walt_5d">
-  <name>gamemaker19</name>
-</developer>
+  <developer id="io.github.gamemaker19">
+    <name>gamemaker19</name>
+  </developer>
 
   <url type="homepage">https://gamemaker19.github.io/MMXOnlineDesktop/</url>
   <url type="bugtracker">https://github.com/Walt-5D/MMXOD-Vanilla-Flatpak-Linux/issues</url>
   <url type="help">https://github.com/Walt-5D/MMXOD-Vanilla-Flatpak-Linux/blob/main/help.md</url>
-  <url type="vcs-browser">https://github.com/Walt-5D/MMXOD-Vanilla-Flatpak-Linux/blob/main/README.md</url>
+  <url type="vcs-browser">https://github.com/Walt-5D/MMXOD-Vanilla-Flatpak-Linux</url>
 
   <launchable type="desktop-id">io.github.walt_5d.MMXOD.desktop</launchable>
 

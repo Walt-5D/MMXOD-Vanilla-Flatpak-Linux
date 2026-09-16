@@ -11,7 +11,15 @@ export LD_LIBRARY_PATH="/app/lib:$DATA_DIR:$LD_LIBRARY_PATH"
 cd "$DATA_DIR" || exit 1
 chmod +x MMX 2>/dev/null || true
 
-# --- INHIBIDOR EN SEGUNDO PLANO ---
+# --- INHIBIDOR DE SUSPENSION, EN SEGUNDO PLANO ---
+#
+# IMPORTANTE: esto corre como un proceso en segundo plano que se mantiene
+# vivo con GLib.MainLoop().run() durante toda la partida, a propósito.
+# Varias de estas interfaces (Cinnamon incluida) liberan el bloqueo apenas
+# se cierra la conexión D-Bus que lo pidió - una llamada suelta tipo
+# "gdbus call" se desconecta sola al terminar y el bloqueo dura solo
+# milisegundos, aunque devuelva éxito. Por eso NO se puede simplificar
+# esto a una llamada única: necesita una conexión que siga abierta.
 python3 -c "
 import gi
 from gi.repository import Gio, GLib
@@ -20,29 +28,60 @@ bus = Gio.bus_get_sync(Gio.BusType.SESSION, None)
 flags = Gio.DBusCallFlags.NONE
 app_id = 'io.github.walt_5d.MMXOD'
 reason = 'Juego en ejecucion'
+fallos = []
 
 # 1. Estándar Freedesktop (Cinnamon, KDE, XFCE, MATE)
 try:
-    bus.call_sync('org.freedesktop.ScreenSaver', '/org/freedesktop/ScreenSaver', 
-                  'org.freedesktop.ScreenSaver', 'Inhibit', 
+    bus.call_sync('org.freedesktop.ScreenSaver', '/org/freedesktop/ScreenSaver',
+                  'org.freedesktop.ScreenSaver', 'Inhibit',
                   GLib.Variant('(ss)', (app_id, reason)), None, flags, -1, None)
-except Exception:
-    pass
+except Exception as e:
+    fallos.append('ScreenSaver: %s' % e)
 
-# 2. Estricto GNOME (Ubuntu, Fedora, etc.)
+# 2. Gestor de sesión GNOME/Cinnamon
 try:
-    bus.call_sync('org.gnome.SessionManager', '/org/gnome/SessionManager', 
-                  'org.gnome.SessionManager', 'Inhibit', 
+    bus.call_sync('org.gnome.SessionManager', '/org/gnome/SessionManager',
+                  'org.gnome.SessionManager', 'Inhibit',
                   GLib.Variant('(susu)', (app_id, 0, reason, 8)), None, flags, -1, None)
-except Exception:
-    pass
+except Exception as e:
+    fallos.append('SessionManager: %s' % e)
+
+# 3. Respaldo systemd-logind - cubre entornos sin escritorio completo
+# (sway, Hyprland, i3, etc.) donde ninguna de las dos interfaces de
+# arriba existe. El file descriptor ES el bloqueo: mientras este mismo
+# proceso lo mantenga abierto, logind no deja que el sistema suspenda.
+logind_fd = None
+try:
+    sys_bus = Gio.bus_get_sync(Gio.BusType.SYSTEM, None)
+    result, fd_list = sys_bus.call_with_unix_fd_list_sync(
+        'org.freedesktop.login1', '/org/freedesktop/login1',
+        'org.freedesktop.login1.Manager', 'Inhibit',
+        GLib.Variant('(ssss)', ('sleep:idle', app_id, reason, 'block')),
+        GLib.VariantType('(h)'), flags, -1, None, None)
+    handle = result.unpack()[0]
+    logind_fd = fd_list.get(handle)
+except Exception as e:
+    fallos.append('logind: %s' % e)
+
+# Si los tres fallaron, deja rastro para poder diagnosticarlo despues
+# sin tener que reproducir todo el proceso de nuevo.
+if len(fallos) == 3:
+    try:
+        with open('inhibit-debug.log', 'a') as f:
+            f.write('Los tres mecanismos de inhibicion fallaron:\n')
+            for m in fallos:
+                f.write('  ' + m + '\n')
+    except Exception:
+        pass
 
 loop = GLib.MainLoop()
 loop.run()
 " &
 INHIBIT_PID=$!
 
-# Matar el proceso de Python al salir para liberar el bloqueo
+# Matar el proceso de Python al salir libera todo: la conexión de sesión
+# se cierra (liberando ScreenSaver/SessionManager) y el file descriptor
+# de logind se cierra con el proceso (liberando ese inhibidor también).
 trap 'kill $INHIBIT_PID 2>/dev/null || true' EXIT INT TERM
 
 # Ejecutar el juego
