@@ -21,7 +21,7 @@ flatpak run io.github.walt_5d.MMXOD
 
 # Post-Install
 
-Click on [HELP](https://github.com/Walt-5D/MMXOD-Vanilla-Flatpak-Linux/blob/main/help.md) for information on how to add custom maps and connect online.
+Click on [HELP GUIDE](https://github.com/Walt-5D/MMXOD-Vanilla-Flatpak-Linux/blob/main/help.md) to add custom maps and connect online.
 
 ## More information:
 
