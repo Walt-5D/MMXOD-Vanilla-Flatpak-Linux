@@ -1,25 +1,51 @@
 #!/bin/sh
+set -e
+
 SRC_GAME_DIR="/app/share/mmxod"
-DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/mmxod"
 
-mkdir -p "$DATA_DIR"
-cp -rn "$SRC_GAME_DIR"/. "$DATA_DIR"/ 2>/dev/null || true
+# Detectar ruta de Documentos de forma nativa e internacional
+XDG_DOCS=$(xdg-user-dir DOCUMENTS 2>/dev/null || true)
 
-export ALSOFT_DRIVERS="pulse"
-export LD_LIBRARY_PATH="/app/lib:$DATA_DIR:$LD_LIBRARY_PATH"
+if [ -n "$XDG_DOCS" ]; then
+    DOCS_DIR="$XDG_DOCS/MMXOD"
+else
+    # Respaldo por si el sistema carece de la herramienta XDG
+    DOCS_DIR="$HOME/Documentos/MMXOD"
+fi
 
-cd "$DATA_DIR" || exit 1
-chmod +x MMX 2>/dev/null || true
+mkdir -p "$DOCS_DIR"
 
-# --- INHIBIDOR DE SUSPENSION, EN SEGUNDO PLANO ---
-#
-# IMPORTANTE: esto corre como un proceso en segundo plano que se mantiene
-# vivo con GLib.MainLoop().run() durante toda la partida, a propósito.
-# Varias de estas interfaces (Cinnamon incluida) liberan el bloqueo apenas
-# se cierra la conexión D-Bus que lo pidió - una llamada suelta tipo
-# "gdbus call" se desconecta sola al terminar y el bloqueo dura solo
-# milisegundos, aunque devuelva éxito. Por eso NO se puede simplificar
-# esto a una llamada única: necesita una conexión que siga abierta.
+# Detectar la ruta física real de los assets en el sistema anfitrión
+HOST_USER_ASSETS="$HOME/.local/share/flatpak/app/io.github.walt_5d.MMXOD/current/active/files/share/mmxod/assets"
+HOST_SYS_ASSETS="/var/lib/flatpak/app/io.github.walt_5d.MMXOD/current/active/files/share/mmxod/assets"
+
+if [ -d "$HOST_USER_ASSETS" ]; then
+    REAL_ASSETS="$HOST_USER_ASSETS"
+elif [ -d "$HOST_SYS_ASSETS" ]; then
+    REAL_ASSETS="$HOST_SYS_ASSETS"
+else
+    REAL_ASSETS="$SRC_GAME_DIR/assets"
+fi
+
+# Eliminar carpeta duplicada o enlace desactualizado si existen
+if [ -d "$DOCS_DIR/assets" ] && [ ! -L "$DOCS_DIR/assets" ]; then
+    rm -rf "$DOCS_DIR/assets"
+fi
+
+if [ -L "$DOCS_DIR/assets" ]; then
+    rm -f "$DOCS_DIR/assets"
+fi
+
+# Crear enlace simbólico apuntando a la ruta real accesible por Nemo
+ln -s "$REAL_ASSETS" "$DOCS_DIR/assets"
+
+# Configuración de audio y librerías
+export ALSOFT_DRIVERS="pipewire"
+export LD_LIBRARY_PATH="/app/lib:$SRC_GAME_DIR:$LD_LIBRARY_PATH"
+
+cd "$DOCS_DIR" || exit 1
+
+# --- INHIBIDOR DE SUSPENSIÓN EN SEGUNDO PLANO ---
 python3 -c "
 import gi
 from gi.repository import Gio, GLib
@@ -46,10 +72,7 @@ try:
 except Exception as e:
     fallos.append('SessionManager: %s' % e)
 
-# 3. Respaldo systemd-logind - cubre entornos sin escritorio completo
-# (sway, Hyprland, i3, etc.) donde ninguna de las dos interfaces de
-# arriba existe. El file descriptor ES el bloqueo: mientras este mismo
-# proceso lo mantenga abierto, logind no deja que el sistema suspenda.
+# 3. Respaldo systemd-logind
 logind_fd = None
 try:
     sys_bus = Gio.bus_get_sync(Gio.BusType.SYSTEM, None)
@@ -63,29 +86,14 @@ try:
 except Exception as e:
     fallos.append('logind: %s' % e)
 
-# Si los tres fallaron, deja rastro para poder diagnosticarlo despues
-# sin tener que reproducir todo el proceso de nuevo.
-if len(fallos) == 3:
-    try:
-        with open('inhibit-debug.log', 'a') as f:
-            f.write('Los tres mecanismos de inhibicion fallaron:\n')
-            for m in fallos:
-                f.write('  ' + m + '\n')
-    except Exception:
-        pass
-
 loop = GLib.MainLoop()
 loop.run()
 " &
 INHIBIT_PID=$!
 
-# Matar el proceso de Python al salir libera todo: la conexión de sesión
-# se cierra (liberando ScreenSaver/SessionManager) y el file descriptor
-# de logind se cierra con el proceso (liberando ese inhibidor también).
 trap 'kill $INHIBIT_PID 2>/dev/null || true' EXIT INT TERM
 
-# Ejecutar el juego
-./MMX "$@"
+"$SRC_GAME_DIR/MMX" "$@"
 EXIT_CODE=$?
 
 exit $EXIT_CODE
