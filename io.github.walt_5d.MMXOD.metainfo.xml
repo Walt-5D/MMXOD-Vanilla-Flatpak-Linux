@@ -9,31 +9,63 @@
 
   <summary>Unofficial fan-made 2D platform shooter game</summary>
   <summary xml:lang="es">Juego de disparos y plataformas 2D no oficial creado por fans</summary>
+  <summary xml:lang="pt">Jogo de tiro em plataforma 2D não oficial feito por fãs</summary>
+  <summary xml:lang="fr">Jeu de tir et de plate-forme 2D non officiel créé par des fans</summary>
 
   <description>
     <p>
       Mega Man X Online: Deathmatch is a fast-paced 2D multiplayer action game inspired by the Mega Man X series, featuring custom arenas and multiple playable characters.
     </p>
+    <p xml:lang="es">
+      Mega Man X Online: Deathmatch es un juego rápido de acción multijugador en 2D inspirado en la saga Mega Man X, con arenas personalizadas y varios personajes jugables.
+    </p>
+    <p xml:lang="pt">
+      Mega Man X Online: Deathmatch é um jogo de ação multijogador 2D frenético inspirado na série Mega Man X, com arenas personalizadas e vários personagens jogáveis.
+    </p>
+    <p xml:lang="fr">
+      Mega Man X Online: Deathmatch est un jeu d'action multijoueur 2D rapide inspiré de la série Mega Man X, proposant des arènes personnalisées et plusieurs personnages jouables.
+    </p>
     <p>
       Disclaimer: This is an unofficial, community-maintained fan project created for preservation purposes. It is not affiliated with, endorsed by, or associated with Capcom. All original intellectual properties belong to their respective owners.
+    </p>
+    <p xml:lang="es">
+      Aviso legal: Este es un proyecto de fans no oficial, mantenido por la comunidad con fines de preservación. No está afiliado, respaldado ni asociado con Capcom. Todas las propiedades intelectuales originales pertenecen a sus respectivos dueños.
+    </p>
+    <p xml:lang="pt">
+      Aviso legal: Este é um projeto de fãs não oficial mantido pela comunidade criado para fins de preservação. Não é afiliado, endossado ou associado à Capcom. Todas as propriedades intelectuais originais pertencem aos seus respectivos proprietários.
+    </p>
+    <p xml:lang="fr">
+      Avertissement : Il s'agit d'un projet de fans non officiel géré par la communauté à des fins de préservation. Il n'est pas affilié à, approuvé par ou associé à Capcom. Toutes les propriétés intellectuelles originales appartiennent à leurs propriétaires respectifs.
     </p>
   </description>
 
   <screenshots>
     <screenshot type="default">
       <caption>Mega Man X Online: Deathmatch Poster</caption>
+      <caption xml:lang="es">Póster de Mega Man X Online: Deathmatch</caption>
+      <caption xml:lang="pt">Pôster do Mega Man X Online: Deathmatch</caption>
+      <caption xml:lang="fr">Affiche de Mega Man X Online: Deathmatch</caption>
       <image>https://raw.githubusercontent.com/Walt-5D/MMXOD-Vanilla-Flatpak-Linux/refs/tags/v19.12/Images/cover.png</image>
     </screenshot>
     <screenshot>
       <caption>Futuristic Arena Multiplayer Action</caption>
+      <caption xml:lang="es">Acción multijugador en arenas futuristas</caption>
+      <caption xml:lang="pt">Ação multijogador em arenas futuristas</caption>
+      <caption xml:lang="fr">Action multijoueur dans une arène futuriste</caption>
       <image>https://raw.githubusercontent.com/Walt-5D/MMXOD-Vanilla-Flatpak-Linux/refs/tags/v19.12/Images/gameplay1.png</image>
     </screenshot>
     <screenshot>
       <caption>Snow Mountain Stage Combat</caption>
+      <caption xml:lang="es">Combate en el escenario de la montaña nevada</caption>
+      <caption xml:lang="pt">Combate no cenário da montanha de neve</caption>
+      <caption xml:lang="fr">Combat dans le niveau de la montagne enneigée</caption>
       <image>https://raw.githubusercontent.com/Walt-5D/MMXOD-Vanilla-Flatpak-Linux/refs/tags/v19.12/Images/gameplay2.png</image>
     </screenshot>
     <screenshot>
       <caption>Ride Armor and Special Attacks</caption>
+      <caption xml:lang="es">Ride Armor y ataques especiales</caption>
+      <caption xml:lang="pt">Ride Armor e ataques especiais</caption>
+      <caption xml:lang="fr">Ride Armor et attaques spéciales</caption>
       <image>https://raw.githubusercontent.com/Walt-5D/MMXOD-Vanilla-Flatpak-Linux/refs/tags/v19.12/Images/gameplay3.png</image>
     </screenshot>
   </screenshots>

@@ -15,9 +15,6 @@ finish-args:
   - --filesystem=xdg-run/pipewire-0
   # Acceso a Documentos
   - --filesystem=xdg-documents
-  # Lectura directa a la ruta de instalacion de Flatpak en el anfitrion
-  - --filesystem=~/.local/share/flatpak:ro
-  - --filesystem=/var/lib/flatpak:ro
   # Gamepad and controller support
   - --device=input
   # Screen saver / session idle inhibition
@@ -100,7 +97,7 @@ modules:
       - cp -a game/. /app/share/mmxod/
       - chmod +x /app/share/mmxod/MMX
 
-      # Corregir symlinks de SFML (Obligatorio por el origen .zip)
+      # Corregir symlinks de SFML
       - for name in audio graphics system window; do rm -f /app/share/mmxod/libsfml-$name.so /app/share/mmxod/libsfml-$name.so.2.5; ln -s libsfml-$name.so.2.5.1 /app/share/mmxod/libsfml-$name.so.2.5; ln -s libsfml-$name.so.2.5.1 /app/share/mmxod/libsfml-$name.so; done
 
       # Copiar librerías de SFML
