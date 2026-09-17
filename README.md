@@ -9,7 +9,7 @@ Requires [Flatpak](https://flatpak.org/setup/) to already be installed on your s
 wget https://github.com/Walt-5D/MMXOD-Vanilla-Flatpak-Linux/releases/download/v19.12/MMXOD.flatpak
 #2 install MMXOD.flatpak
 flatpak install ./MMXOD.flatpak
-#3 refresh menu apps
+#3 refresh apps menu
 sudo update-desktop-database /var/lib/flatpak/exports/share/applications/
 ```
 
