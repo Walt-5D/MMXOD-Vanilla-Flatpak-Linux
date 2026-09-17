@@ -1,4 +1,4 @@
-# Mega Man X Online: Deathmatch (flatpak) Linux
+# Mega Man X Online: Deathmatch (flatpak)
 ## Help Guide / Guía de Ayuda
 
 Please select your language / Por favor, selecciona tu idioma:
