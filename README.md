@@ -1,3 +1,7 @@
+Installation Terminal:
+wget https://github.com/Walt-5D/MMXOD-Vanilla-Flatpak-Linux/releases/download/v19.12/MMXOD.flatpak
+flatpak install ./MMXOD.flatpak
+
 # Mega Man X Online: Deathmatch (Flatpak)
 
 Preservation Flatpak build for **Mega Man X Online: Deathmatch**.
