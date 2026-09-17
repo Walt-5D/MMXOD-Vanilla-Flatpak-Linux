@@ -1,6 +1,7 @@
-# Mega Man X Online: Deathmatch - Help Guide / Guía de Ayuda / Guia de Ajuda / Guide d'Aide
+# Mega Man X Online: Deathmatch 
+# Help Guide / Guía de Ayuda
 
-Please select your language / Por favor, selecciona tu idioma / Por favor, selecione seu idioma / Veuillez sélectionner votre langue :
+Please select your language / Por favor, selecciona tu idioma:
 
 <details>
 <summary><b>🇺🇸 English Instruction</b></summary>
