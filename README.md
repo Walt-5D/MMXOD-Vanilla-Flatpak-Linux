@@ -1,7 +1,5 @@
 # Mega Man X Online: Deathmatch (Flatpak)
 
-Preservation Flatpak build for **Mega Man X Online: Deathmatch**.
-
 ## Installation
 
 Requires [Flatpak](https://flatpak.org/setup/) to already be installed on your system.
