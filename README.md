@@ -15,14 +15,12 @@ Once installed, launch it from your application menu as **Mega Man X Online: Dea
 flatpak run io.github.walt_5d.MMXOD
 ```
 
-### Capcom
-The company that created the awesome franchise! Without them, this fan project and its resources wouldn't exist!
-
 ### Packaging Notice
 * **Game Developer:** gamemaker19 (Original author)
 * **Packager / Maintainer:** Walt-5D
 * **Context:** The original author released the game files to the public and discontinued active development. This Flatpak packages the latest stable Linux build to preserve access to the game.
 
 ### Credits & Disclaimer
+* **Capcom:** The company that created the awesome franchise! Without them, this fan project and its resources wouldn't exist!
 * **Developer:** gamemaker19 for creating and programming this fan project.
 * **Disclaimer:** This is an unofficial community-maintained Flatpak packaging for Linux distributions. All assets and intellectual property belong to their respective owners.
