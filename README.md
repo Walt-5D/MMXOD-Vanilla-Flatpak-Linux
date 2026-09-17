@@ -1,7 +1,6 @@
 # Mega Man X Online: Deathmatch (Flatpak)
 
 # Installation
-
 Requires [Flatpak](https://flatpak.org/setup/) to already be installed on your system.
 
 ```sh
@@ -17,7 +16,6 @@ flatpak run io.github.walt_5d.MMXOD
 ```
 
 # Post-Install
-
 Click on [HELP](https://github.com/Walt-5D/MMXOD-Vanilla-Flatpak-Linux/blob/main/help.md) for information on how to add custom maps and connect online.
 
 ##
