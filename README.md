@@ -16,6 +16,8 @@ Once installed, launch it from your application menu as **Mega Man X Online: Dea
 flatpak run io.github.walt_5d.MMXOD
 ```
 
+[HELP/AYUDA](https://flatpak.org/setup/)
+
 ### Packaging Notice
 * **Game Developer:** gamemaker19 (Original author)
 * **Packager / Maintainer:** Walt-5D
