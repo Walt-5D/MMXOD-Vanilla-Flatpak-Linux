@@ -1,5 +1,5 @@
 # Mega Man X Online: Deathmatch 
-# Help Guide / Guía de Ayuda
+### Help Guide / Guía de Ayuda
 
 Please select your language / Por favor, selecciona tu idioma:
 
