@@ -7,6 +7,7 @@ Requires [Flatpak](https://flatpak.org/setup/) to already be installed on your s
 ```sh
 wget https://github.com/Walt-5D/MMXOD-Vanilla-Flatpak-Linux/releases/download/v19.12/MMXOD.flatpak
 flatpak install ./MMXOD.flatpak
+sudo update-desktop-database /var/lib/flatpak/exports/share/applications/
 ```
 
 Once installed, launch it from your application menu as **Mega Man X Online: Deathmatch**, or from a terminal with:
