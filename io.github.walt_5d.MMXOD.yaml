@@ -15,8 +15,8 @@ finish-args:
   - --filesystem=xdg-run/pipewire-0
   # Acceso a Documentos
   - --filesystem=xdg-documents
-  # Gamepad and controller support
-  - --device=input
+  # Gamepad and controller support (Acceso total para evitar error en js0)
+  - --device=all
   # Screen saver / session idle inhibition
   - --talk-name=org.freedesktop.ScreenSaver
   - --talk-name=org.gnome.SessionManager
